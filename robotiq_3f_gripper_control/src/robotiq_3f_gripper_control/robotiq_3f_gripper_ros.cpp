@@ -63,12 +63,13 @@ void Robotiq3FGripperROS::publish()
 
 bool Robotiq3FGripperROS::handleInit(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp)
 {
-    ROS_DEBUG_NAMED("RobotiqCANROS", "entered handle_init");
+    // ROS_INFO_STREAM("entered handle_init " << std::this_thread::get_id());
     //! set controller state (INIT_ACTIVATION)
     driver_->setInitialization(INIT_ACTIVATION);
     //! wait for controller state (GRIPPER_READY)
     while(!driver_->isReady())
-    {
+    {   
+        // ROS_INFO_STREAM("waiting for ready " << std::this_thread::get_id());
         desired_update_freq_.sleep();
     }
     resp.message += "Init succeeded. ";
@@ -77,6 +78,7 @@ bool Robotiq3FGripperROS::handleInit(std_srvs::TriggerRequest &req, std_srvs::Tr
     //! wait for controller state (ACTION_GO)
     while(driver_->isHalted())
     {
+        // ROS_INFO_STREAM("waiting for halt " << std::this_thread::get_id());
         desired_update_freq_.sleep();
     }
     resp.success = true;
@@ -86,7 +88,8 @@ bool Robotiq3FGripperROS::handleInit(std_srvs::TriggerRequest &req, std_srvs::Tr
 
 bool Robotiq3FGripperROS::handleReset(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp)
 {
-    ROS_DEBUG_NAMED("RobotiqCANROS", "entered handle_reset");
+    // ROS_INFO("entered handle_reset");
+    // ROS_INFO_STREAM("entered handle_reset " << std::this_thread::get_id());
     //! shutdown
     handleShutdown(req, resp);
     //! init
@@ -96,10 +99,13 @@ bool Robotiq3FGripperROS::handleReset(std_srvs::TriggerRequest &req, std_srvs::T
 
 bool Robotiq3FGripperROS::handleHalt(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp)
 {
-    ROS_DEBUG_NAMED("RobotiqCANROS", "entered handle_halt");
+    // ROS_INFO("entered handle_halt");
+    // ROS_INFO_STREAM("entered handle_halt " << std::this_thread::get_id());
+
     //! check for activation
     if(!driver_->isInitialized())
     {
+        // ROS_WARN("Gripper not initialized. ");
         resp.success = false;
         resp.message = "Not initialized. ";
         return true;
@@ -109,6 +115,7 @@ bool Robotiq3FGripperROS::handleHalt(std_srvs::TriggerRequest &req, std_srvs::Tr
     //! wait for controller state (ACTION_STOP)
     while(!driver_->isHalted())
     {
+        // ROS_INFO_STREAM("waiting for halt ");
         desired_update_freq_.sleep();
     }
     resp.success = true;
@@ -118,7 +125,7 @@ bool Robotiq3FGripperROS::handleHalt(std_srvs::TriggerRequest &req, std_srvs::Tr
 
 bool Robotiq3FGripperROS::handleEmergRelease(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp)
 {
-    ROS_DEBUG_NAMED("RobotiqCANROS", "entered handle_emerg_release");
+    // ROS_INFO("entered handle_emerg_release");
     //! halt
     handleHalt(req, resp);
     //! set controller state (EMERGENCY_RELEASE_ENGAGED)
@@ -136,7 +143,7 @@ bool Robotiq3FGripperROS::handleEmergRelease(std_srvs::TriggerRequest &req, std_
 
 bool Robotiq3FGripperROS::handleShutdown(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp)
 {
-    ROS_DEBUG_NAMED("RobotiqCANROS", "entered handle_shutdown");
+    // ROS_INFO("entered handle_shutdown");
     //! halt
     handleHalt(req, resp);
     //! set controller state (INIT_RESET)
@@ -154,7 +161,7 @@ bool Robotiq3FGripperROS::handleShutdown(std_srvs::TriggerRequest &req, std_srvs
 
 void Robotiq3FGripperROS::handleReconfigure(robotiq_3f_gripper_control::Robotiq3FGripperConfig &config, uint32_t level)
 {
-    ROS_DEBUG_NAMED("RobotiqCANROS", "entered handle_reconfigure");
+    // ROS_INFO("entered handle_reconfigure");
     driver_->setInidividualControlMode((robotiq::IndividualControl)config.ind_control_fingers, (robotiq::IndividualControl)config.ind_control_scissor);
     if (!config.ind_control_scissor)
     {
@@ -187,6 +194,6 @@ void Robotiq3FGripperROS::getCurrentConfig(robotiq_3f_gripper_control::Robotiq3F
 
 void Robotiq3FGripperROS::handleRawCmd(const robotiq_3f_gripper_articulated_msgs::Robotiq3FGripperRobotOutput::ConstPtr &msg)
 {
-    ROS_DEBUG_NAMED("RobotiqCANROS", "entered handle_raw_cmd");
+    ROS_INFO("entered handle_raw_cmd");
     driver_->setRaw(*msg);
 }

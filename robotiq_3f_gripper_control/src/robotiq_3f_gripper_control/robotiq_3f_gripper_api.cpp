@@ -167,11 +167,15 @@ void Robotiq3FGripperAPI::getCommandPos(double *posA, double *posB, double *posC
 
 bool Robotiq3FGripperAPI::isInitialized()
 {
+    // ROS_INFO_STREAM("gACT: " << (int)status_.gACT << " INIT_ACTIVATION: " << INIT_ACTIVATION << " is equal? " << ((InitializationMode)status_.gACT == INIT_ACTIVATION));
+    // ROS_INFO_STREAM("in API Init: " << &status_);
     return ((InitializationMode)status_.gACT == INIT_ACTIVATION);
 }
 
 bool Robotiq3FGripperAPI::isReady()
 {
+    // ROS_INFO_STREAM("In API: " << std::this_thread::get_id() << " " << this << " status " << &status_ << " gIMC is " << (int)status_.gIMC << " gIMC address " << &status_.gIMC );
+    // ROS_INFO_STREAM("in API Ready: " << &status_);
     return ((GripperStatus)status_.gIMC == GRIPPER_READY);
 }
 
@@ -181,7 +185,8 @@ bool Robotiq3FGripperAPI::isModeSet(GraspingMode mode)
 }
 
 bool Robotiq3FGripperAPI::isHalted()
-{
+{   
+    // ROS_INFO_STREAM("In API: " << std::this_thread::get_id() << " " << this << " status " << &status_ << " gGTO is " << (int)status_.gGTO << " GTO address " << &status_.gGTO);
     return ((ActionMode)status_.gGTO == ACTION_STOP);
 }
 
@@ -198,9 +203,13 @@ bool Robotiq3FGripperAPI::isEmergReleaseComplete()
 void Robotiq3FGripperAPI::read()
 {
     status_ = base_->readInputs();
+    // Show thread ID and object addess
+    // ROS_INFO_STREAM("readInputs: " << std::this_thread::get_id()  << " with API " << this << " and status " << &status_ << " and gIMC " << (int)status_.gIMC << "; gGTO " << (int)status_.gGTO << "; gACT: " << (int)status_.gACT);
+
 }
 
 void Robotiq3FGripperAPI::write()
 {
+    // ROS_INFO_STREAM("writeOutputs: " << std::this_thread::get_id()  << " with API " << this  << " and rACT " << (int)command_.rACT << " and rGTO " << (int)command_.rGTO);
     base_->writeOutputs(command_);
 }

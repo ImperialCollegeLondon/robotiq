@@ -56,31 +56,43 @@ add_dependencies(${PROJECT_NAME}
   ${catkin_EXPORTED_TARGETS}
 )
 
-add_executable(robotiq_3f_gripper_ethercat_node
-  src/${PROJECT_NAME}/robotiq_3f_gripper_ethercat_client.cpp
-  src/robotiq_3f_gripper_ethercat_node.cpp
+# add_executable(robotiq_3f_gripper_ethercat_node
+#   src/${PROJECT_NAME}/robotiq_3f_gripper_ethercat_client.cpp
+#   src/robotiq_3f_gripper_ethercat_node.cpp
+# )
+
+# target_link_libraries(robotiq_3f_gripper_ethercat_node
+#    ${PROJECT_NAME}
+#    ${robotiq_ethercat_LIBRARIES}
+#    ${catkin_LIBRARIES}
+# )
+
+
+add_executable(robotiq_3f_gripper_modbus_tcp_node
+  src/${PROJECT_NAME}/robotiq_3f_gripper_modbus_tcp_client.cpp
+  src/robotiq_3f_gripper_modbus_tcp_node.cpp
 )
 
-target_link_libraries(robotiq_3f_gripper_ethercat_node
+target_link_libraries(robotiq_3f_gripper_modbus_tcp_node
    ${PROJECT_NAME}
-   ${robotiq_ethercat_LIBRARIES}
    ${catkin_LIBRARIES}
 )
 
-add_executable(robotiq_3f_gripper_can_node
-  src/robotiq_3f_gripper_can_node.cpp
-  src/${PROJECT_NAME}/robotiq_3f_gripper_can_client.cpp
-)
+# add_executable(robotiq_3f_gripper_can_node
+#   src/robotiq_3f_gripper_can_node.cpp
+#   src/${PROJECT_NAME}/robotiq_3f_gripper_can_client.cpp
+# )
 
-target_link_libraries(robotiq_3f_gripper_can_node
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
+# target_link_libraries(robotiq_3f_gripper_can_node
+#   ${PROJECT_NAME}
+#   ${catkin_LIBRARIES}
+# )
 
 install(PROGRAMS nodes/Robotiq3FGripperSimpleController.py nodes/Robotiq3FGripperStatusListener.py
         nodes/Robotiq3FGripperTcpNode.py DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-install(TARGETS robotiq_3f_gripper_can_node ${PROJECT_NAME} robotiq_3f_gripper_ethercat_node
+install(TARGETS  ${PROJECT_NAME} robotiq_3f_gripper_modbus_tcp_node
+#install(TARGETS robotiq_3f_gripper_can_node ${PROJECT_NAME} robotiq_3f_gripper_ethercat_node robotiq_3f_gripper_modbus_tcp_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

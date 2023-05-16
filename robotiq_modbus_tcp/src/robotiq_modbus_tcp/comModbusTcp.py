@@ -63,6 +63,7 @@ class communication:
 
    def sendCommand(self, data):
       """Send a command to the Gripper - the method takes a list of uint8 as an argument. The meaning of each variable depends on the Gripper model (see support.robotiq.com for more details)"""
+      
       #make sure data has an even number of elements
       if(len(data) % 2 == 1):
          data.append(0)
@@ -77,6 +78,8 @@ class communication:
       #To do!: Implement try/except
       with self.lock:
          self.client.write_registers(0, message)
+
+      # print("sent; time: " + str(time.time()))
 
    def getStatus(self, numBytes):
       """Sends a request to read, wait for the response and returns the Gripper status. The method gets the number of bytes to read as an argument"""

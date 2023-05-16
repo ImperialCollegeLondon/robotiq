@@ -29,6 +29,8 @@
 #include <robotiq_3f_gripper_articulated_msgs/Robotiq3FGripperRobotOutput.h>
 #include <robotiq_3f_gripper_articulated_msgs/Robotiq3FGripperRobotInput.h>
 
+#include <thread>
+
 namespace robotiq_3f_gripper_control
 {
 
@@ -51,7 +53,7 @@ public:
      * \brief Reads set of input-register values from the gripper.
      * \return The gripper input registers as read from the controller IOMap
      */
-    virtual GripperInput readInputs() const = 0;
+    virtual GripperInput readInputs() = 0;
 
     /**
      * \brief Reads set of output-register values from the gripper.

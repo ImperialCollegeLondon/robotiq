@@ -65,6 +65,7 @@ void Robotiq3FGripperHWInterface::configure(hardware_interface::JointStateInterf
     //! Connect and register jonit state interface
     for (std::size_t joint_id = 0; joint_id < 4; ++joint_id)
     {
+        ROS_INFO_STREAM("Registering joint " << joint_names_[joint_id] << " with id " << joint_id);
         // Create joint state interface
         joint_state_interface.registerHandle(hardware_interface::JointStateHandle(
                                                   joint_names_[joint_id],
@@ -77,6 +78,7 @@ void Robotiq3FGripperHWInterface::configure(hardware_interface::JointStateInterf
     //! Connect and register joint position interface
     for(std::size_t joint_id = 0; joint_id < 4; ++joint_id)
     {
+        // ROS_INFO_STREAM("Registering joint (position) " << joint_names_[joint_id] << " with id " << joint_id);
         // Create joint position interface
         joint_position_interface.registerHandle(hardware_interface::JointHandle(
                                                      joint_state_interface.getHandle(joint_names_[joint_id]),
@@ -86,6 +88,8 @@ void Robotiq3FGripperHWInterface::configure(hardware_interface::JointStateInterf
 
 void Robotiq3FGripperHWInterface::read(ros::Duration d)
 {
+    // Show thread ID and object addess
+    // ROS_INFO_STREAM("In HW interface: " << std::this_thread::get_id() << " " << hw_driver_.get());
     hw_driver_->read();
     hw_driver_->getPosition(&j_curr_pos_[0], &j_curr_pos_[1], &j_curr_pos_[2], &j_curr_pos_[3]);
     hw_driver_->getCommandPos(&j_cmd_pos_[0], &j_cmd_pos_[1], &j_cmd_pos_[2], &j_cmd_pos_[3]);

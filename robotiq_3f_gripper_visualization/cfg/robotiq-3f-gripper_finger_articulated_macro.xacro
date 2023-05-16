@@ -127,5 +127,16 @@ finger(i.e. finger_1, etc...).
 			<limit lower="-1.2217" upper="-0.0523" effort="100" velocity="100"/>
 		</joint>
 		<!-- end of joint list -->
+
+		<transmission name="trans_${prefix}joint_1">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${prefix}joint_1">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${prefix}joint_1_motor">
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
 	</xacro:macro>
 </robot>
