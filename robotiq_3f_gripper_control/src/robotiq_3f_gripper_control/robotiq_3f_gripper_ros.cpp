@@ -74,6 +74,9 @@ bool Robotiq3FGripperROS::handleInit(std_srvs::TriggerRequest &req, std_srvs::Tr
     }
     resp.message += "Init succeeded. ";
     //! set action mode to go (ACTION_GO)
+
+    driver_->setInidividualControlMode(IND_CONTROL_ON, IND_CONTROL_OFF);
+
     driver_->setActionMode(ACTION_GO);
     //! wait for controller state (ACTION_GO)
     while(driver_->isHalted())
