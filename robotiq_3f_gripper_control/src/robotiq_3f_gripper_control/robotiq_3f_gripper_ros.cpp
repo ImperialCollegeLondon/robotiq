@@ -141,7 +141,7 @@ bool Robotiq3FGripperROS::handleEmergRelease(std_srvs::TriggerRequest &req, std_
     driver_->setEmergencyRelease(EMERGENCY_RELEASE_IDLE);
     resp.success = true;
     resp.message += "Emergency release complete. ";
-
+    return true;
 }
 
 bool Robotiq3FGripperROS::handleShutdown(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp)
@@ -185,15 +185,18 @@ void Robotiq3FGripperROS::handleReconfigure(robotiq_3f_gripper_control::Robotiq3
     config_ = config;
 }
 
+
 void Robotiq3FGripperROS::updateConfig(const robotiq_3f_gripper_control::Robotiq3FGripperConfig &config)
 {
     reconfigure_->updateConfig(config);
 }
 
+
 void Robotiq3FGripperROS::getCurrentConfig(robotiq_3f_gripper_control::Robotiq3FGripperConfig &config)
 {
     config = config_;
 }
+
 
 void Robotiq3FGripperROS::handleRawCmd(const robotiq_3f_gripper_articulated_msgs::Robotiq3FGripperRobotOutput::ConstPtr &msg)
 {
