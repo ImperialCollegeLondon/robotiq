@@ -65,7 +65,7 @@ void Robotiq3FGripperHWInterface::configure(hardware_interface::JointStateInterf
     //! Connect and register jonit state interface
     for (std::size_t joint_id = 0; joint_id < 4; ++joint_id)
     {
-        ROS_INFO_STREAM("Registering joint " << joint_names_[joint_id] << " with id " << joint_id);
+        // ROS_INFO_STREAM("Registering joint " << joint_names_[joint_id] << " with id " << joint_id);
         // Create joint state interface
         joint_state_interface.registerHandle(hardware_interface::JointStateHandle(
                                                   joint_names_[joint_id],
