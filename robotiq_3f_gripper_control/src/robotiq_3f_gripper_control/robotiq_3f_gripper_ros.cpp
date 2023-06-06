@@ -84,8 +84,11 @@ bool Robotiq3FGripperROS::handleInit(std_srvs::TriggerRequest &req, std_srvs::Tr
         // ROS_INFO_STREAM("waiting for halt " << std::this_thread::get_id());
         desired_update_freq_.sleep();
     }
+    
+    driver_->setVelocity(255, 255, 255, 255);
     resp.success = true;
     resp.message += "Ready to command. ";
+
     return true;
 }
 

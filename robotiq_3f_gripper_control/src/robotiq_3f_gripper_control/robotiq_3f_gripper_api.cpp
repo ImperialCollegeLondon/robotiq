@@ -211,5 +211,6 @@ void Robotiq3FGripperAPI::read()
 void Robotiq3FGripperAPI::write()
 {
     // ROS_INFO_STREAM("writeOutputs: " << std::this_thread::get_id()  << " with API " << this  << " and rACT " << (int)command_.rACT << " and rGTO " << (int)command_.rGTO);
+    // ROS_INFO_STREAM("finger A speed: " << (int)command_.rSPA << " finger A position: " << (int)command_.rPRA);
     base_->writeOutputs(command_);
 }
