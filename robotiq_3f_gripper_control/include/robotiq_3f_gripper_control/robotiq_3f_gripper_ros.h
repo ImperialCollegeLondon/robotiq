@@ -49,6 +49,9 @@ public:
     bool handleHalt(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp);
     bool handleEmergRelease(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp);
     bool handleShutdown(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp);
+    bool handleOpen(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp);
+    bool handleClose(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp);
+
 
     void handleReconfigure(robotiq_3f_gripper_control::Robotiq3FGripperConfig &config, uint32_t level=0);
 
@@ -67,6 +70,8 @@ private:
     ros::ServiceServer halt_srv_;
     ros::ServiceServer emerg_release_srv_;
     ros::ServiceServer shutdown_srv_;
+    ros::ServiceServer open_srv_;
+    ros::ServiceServer close_srv_;
 
     //! Topics
     ros::Publisher input_status_pub_;

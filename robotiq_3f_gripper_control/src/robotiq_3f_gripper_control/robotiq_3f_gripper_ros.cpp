@@ -37,6 +37,8 @@ Robotiq3FGripperROS::Robotiq3FGripperROS(ros::NodeHandle &nh, boost::shared_ptr<
     halt_srv_ = nh_.advertiseService("halt", &Robotiq3FGripperROS::handleHalt, this);
     emerg_release_srv_ = nh_.advertiseService("emergency_release", &Robotiq3FGripperROS::handleEmergRelease, this);
     shutdown_srv_ = nh_.advertiseService("shutdown", &Robotiq3FGripperROS::handleShutdown, this);
+    open_srv_ = nh_.advertiseService("open", &Robotiq3FGripperROS::handleOpen, this);
+    close_srv_ = nh_.advertiseService("close", &Robotiq3FGripperROS::handleClose, this);
 
     //! advertise topics
     input_status_pub_ = nh.advertise<robotiq_3f_gripper_articulated_msgs::Robotiq3FGripperRobotInput>("input", 10);
@@ -89,6 +91,38 @@ bool Robotiq3FGripperROS::handleInit(std_srvs::TriggerRequest &req, std_srvs::Tr
     resp.success = true;
     resp.message += "Ready to command. ";
 
+    return true;
+}
+
+bool Robotiq3FGripperROS::handleClose(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp){
+    if(!driver_->isInitialized())
+    {
+        // ROS_WARN("Gripper not initialized. ");
+        resp.success = false;
+        resp.message = "Not initialized. ";
+        return true;
+    }
+
+    driver_->setGraspingMode(GRASP_BASIC);
+    driver_->setPosition(255, 255, 255, 122);
+    driver_->setActionMode(ACTION_GO);
+    resp.success = true;
+    return true;
+}
+
+bool Robotiq3FGripperROS::handleOpen(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &resp){
+    if(!driver_->isInitialized())
+    {
+        // ROS_WARN("Gripper not initialized. ");
+        resp.success = false;
+        resp.message = "Not initialized. ";
+        return true;
+    }
+
+    driver_->setGraspingMode(GRASP_BASIC);
+    driver_->setPosition(0, 0, 0, 122);
+    driver_->setActionMode(ACTION_GO);
+    resp.success = true;
     return true;
 }
 
