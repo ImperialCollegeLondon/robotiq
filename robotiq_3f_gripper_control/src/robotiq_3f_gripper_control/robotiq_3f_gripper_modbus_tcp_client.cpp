@@ -91,8 +91,8 @@ Robotiq3FGripperModbusTCPClient::GripperInput Robotiq3FGripperModbusTCPClient::r
     for (unsigned i = 0; i < 8; ++i)
     {        
         // Each register is 2 bytes, so we need to unpack two bytes from each register
-        map[i * 2] = (buffer[0] & 0xFF00) >> 8;
-        map[i * 2 + 1] = buffer[0] & 0x00FF;
+        map[i * 2] = (buffer[i] & 0xFF00) >> 8;
+        map[i * 2 + 1] = buffer[i] & 0x00FF;
     }
 
     // numRegs = int(ceil(numBytes/2.0))
@@ -151,6 +151,8 @@ Robotiq3FGripperModbusTCPClient::GripperInput Robotiq3FGripperModbusTCPClient::r
     input.gPRA = map[3];
     input.gPOA = map[4];
     input.gCUA = map[5];
+
+    // ROS_INFO_STREAM("gPRA: " << (int)input.gPRA << " gPOA: " << (int)input.gPOA);
 
     // Finger B
     input.gPRB = map[6];
